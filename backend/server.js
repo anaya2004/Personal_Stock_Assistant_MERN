@@ -13,26 +13,53 @@ app.use(express.json());
 app.use(bodyParser.json()); // Parse JSON request bodies
 
 const SHEET_ID2 = '1S0gvUBlUNKkt-ho_IOXFOQaLev1x3JpWH5Toqj5-tgw'; // Google Sheet ID
-const RANGE = 'BUY!A2:E2'; // Range to append data
+const RANGE = 'buy!A2:E';// Range to append data
 
 // Google API OAuth setup
 const auth = new google.auth.GoogleAuth({
   keyFile: 'service.json', // Path to your service account key JSON
-  scopes: ['https://www.googleapis.com/auth/spreadsheets'],
+  scopes: [
+    'https://www.googleapis.com/auth/spreadsheets',
+    'https://www.googleapis.com/auth/drive',
+  ],
 });
 
 const sheets = google.sheets({ version: 'v4', auth });
+const drive = google.drive({ version: 'v3', auth });
 
 // Constants for Google Sheets API
 const SHEET_ID = process.env.SHEET_ID;
 const API_KEY = process.env.API_KEY;
-const STRATEGY_RANGE = process.env.STRATEGY_RANGE || 'Equity ETF Shop!G3:I13'; // Replace with your strategy range
-const CMP_RANGE = process.env.CMP_RANGE || 'Equity ETF Shop!C3:C68';          // Replace with your CMP range
-const STOCK_CODE_RANGE = process.env.STOCK_CODE_RANGE || 'Equity ETF Shop!A3:A68'; // Replace with your stock code range
+const STRATEGY_RANGE = process.env.STRATEGY_RANGE || 'Equity ETF Shop!G3:I13';
+const CMP_RANGE = process.env.CMP_RANGE || 'Equity ETF Shop!C3:C68';
+const STOCK_CODE_RANGE = process.env.STOCK_CODE_RANGE || 'Equity ETF Shop!A3:A68';
 
-// API to fetch strategy data
+// Function to copy the sheet to the user's account
+const copySheetToUserAccount = async () => {
+  try {
+    const fileMetadata = {
+      name: 'Copied Strategy Sheet',
+    };
+
+    const response = await drive.files.copy({
+      fileId: SHEET_ID,
+      resource: fileMetadata,
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error('Error copying sheet:', error);
+    throw error;
+  }
+};
+
+// API to fetch strategy data and copy the sheet
 app.get('/api/strategy-data', async (req, res) => {
   try {
+    // Copy the sheet to the user's account
+    const copiedSheet = await copySheetToUserAccount();
+    console.log('Sheet copied successfully:', copiedSheet);
+
     // Fetch strategy data using axios
     const strategyResponse = await axios.get(
       `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${STRATEGY_RANGE}?key=${API_KEY}`
@@ -65,15 +92,35 @@ app.get('/api/strategy-data', async (req, res) => {
       });
     });
 
-    // Return the combined data
+    // Return the combined data along with copied sheet info
     res.status(200).json({
       strategyData: strategyResult.values || [],
       cmpData: newCmpResults || [],
       stockCodeData: stockCodeResult.values || [],
+      copiedSheet: copiedSheet,
     });
   } catch (error) {
-    console.error('Error fetching data:', error);
-    res.status(500).send('Failed to fetch strategy data');
+    console.error('Error fetching data or copying sheet:', error);
+    res.status(500).send('Failed to fetch strategy data or copy the sheet');
+  }
+});
+ 
+app.get('/api/get-buy-sheet-data', async (req, res) => {
+  try {
+    const response = await sheets.spreadsheets.values.get({
+      spreadsheetId: SHEET_ID,
+      range: RANGE,
+    });
+    const rows = response.data.values;
+
+    if (!rows || rows.length === 0) {
+      res.status(404).json({ message: 'No data found in the sheet' });
+    } else {
+      res.status(200).json(rows);
+    }
+  } catch (error) {
+    console.error('Error fetching sheet data:', error);
+    res.status(500).json({ error: 'Failed to fetch data from the sheet' });
   }
 });
 

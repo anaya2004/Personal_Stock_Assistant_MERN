@@ -1,203 +1,102 @@
-import PropTypes from 'prop-types';
-// material-ui
-import Link from '@mui/material/Link';
-import Stack from '@mui/material/Stack';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
-
-// third-party
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, Box } from '@mui/material';
 import { NumericFormat } from 'react-number-format';
 
-// project import
-import Dot from 'components/@extended/Dot';
-
-function createData(tracking_no, name, fat, carbs, protein) {
-  return { tracking_no, name, fat, carbs, protein };
-}
-
-const rows = [
-  createData(84564564, 'Camera Lens', 40, 2, 40570),
-  createData(98764564, 'Laptop', 300, 0, 180139),
-  createData(98756325, 'Mobile', 355, 1, 90989),
-  createData(98652366, 'Handset', 50, 1, 10239),
-  createData(13286564, 'Computer Accessories', 100, 1, 83348),
-  createData(86739658, 'TV', 99, 0, 410780),
-  createData(13256498, 'Keyboard', 125, 2, 70999),
-  createData(98753263, 'Mouse', 89, 2, 10570),
-  createData(98753275, 'Desktop', 185, 1, 98063),
-  createData(98753291, 'Chair', 100, 0, 14001)
-];
-
-function descendingComparator(a, b, orderBy) {
-  if (b[orderBy] < a[orderBy]) {
-    return -1;
-  }
-  if (b[orderBy] > a[orderBy]) {
-    return 1;
-  }
-  return 0;
-}
-
-function getComparator(order, orderBy) {
-  return order === 'desc' ? (a, b) => descendingComparator(a, b, orderBy) : (a, b) => -descendingComparator(a, b, orderBy);
-}
-
-function stableSort(array, comparator) {
-  const stabilizedThis = array.map((el, index) => [el, index]);
-  stabilizedThis.sort((a, b) => {
-    const order = comparator(a[0], b[0]);
-    if (order !== 0) {
-      return order;
-    }
-    return a[1] - b[1];
-  });
-  return stabilizedThis.map((el) => el[0]);
-}
-
-const headCells = [
-  {
-    id: 'tracking_no',
-    align: 'left',
-    disablePadding: false,
-    label: 'Tracking No.'
-  },
-  {
-    id: 'name',
-    align: 'left',
-    disablePadding: true,
-    label: 'Product Name'
-  },
-  {
-    id: 'fat',
-    align: 'right',
-    disablePadding: false,
-    label: 'Total Order'
-  },
-  {
-    id: 'carbs',
-    align: 'left',
-    disablePadding: false,
-
-    label: 'Status'
-  },
-  {
-    id: 'protein',
-    align: 'right',
-    disablePadding: false,
-    label: 'Total Amount'
-  }
-];
-
-// ==============================|| ORDER TABLE - HEADER ||============================== //
-
-function OrderTableHead({ order, orderBy }) {
-  return (
-    <TableHead>
-      <TableRow>
-        {headCells.map((headCell) => (
-          <TableCell
-            key={headCell.id}
-            align={headCell.align}
-            padding={headCell.disablePadding ? 'none' : 'normal'}
-            sortDirection={orderBy === headCell.id ? order : false}
-          >
-            {headCell.label}
-          </TableCell>
-        ))}
-      </TableRow>
-    </TableHead>
-  );
-}
-
-function OrderStatus({ status }) {
-  let color;
-  let title;
-
-  switch (status) {
-    case 0:
-      color = 'warning';
-      title = 'Pending';
-      break;
-    case 1:
-      color = 'success';
-      title = 'Approved';
-      break;
-    case 2:
-      color = 'error';
-      title = 'Rejected';
-      break;
-    default:
-      color = 'primary';
-      title = 'None';
-  }
-
-  return (
-    <Stack direction="row" spacing={1} alignItems="center">
-      <Dot color={color} />
-      <Typography>{title}</Typography>
-    </Stack>
-  );
-}
-
-// ==============================|| ORDER TABLE ||============================== //
-
 export default function OrderTable() {
-  const order = 'asc';
-  const orderBy = 'tracking_no';
+  const [rows, setRows] = useState([]);
+  const [cmpData, setCmpData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+  const [totalInvestment] = useState(100000);
+
+  useEffect(() => {
+    const fetchStrategyData = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/api/strategy-data');
+        setRows(response.data.strategyData.slice(1)); // Skip the header row
+        setCmpData(response.data.cmpData); // Set CMP data
+        setLoading(false);
+      } catch (err) {
+        console.error('Failed to fetch data:', err);
+        setError(true);
+        setLoading(false);
+      }
+    };
+    fetchStrategyData();
+  }, []);
+
+  const handleBuy = async (rowIndex) => {
+    const stockDetails = rows[rowIndex];
+    const cmp = cmpData[rowIndex];
+    const shares = Math.floor((totalInvestment / 40) / cmp);
+    const currentDate = new Date().toISOString().split('T')[0];
+
+    const buyData = {
+      stockDetails,
+      cmp,
+      totalInvestment,
+      date: currentDate,
+      rowIndex,
+    };
+
+    try {
+      const response = await axios.post('http://localhost:5000/api/buy', buyData);
+      alert(response.data.message);
+      // Reload the page after the API call is successful
+      window.location.reload();
+    } catch (error) {
+      console.error('Error during the buy operation:', error);
+      alert('An error occurred while processing your request. Please try again.');
+    }
+  };
+
+  const handleDelete = async (stockCode) => {
+    try {
+      const response = await axios.delete(`http://localhost:5000/api/delete/${stockCode}`);
+      alert(response.data.message);
+    } catch (error) {
+      console.error('Error deleting strategy:', error);
+      alert('An error occurred while deleting. Please try again.');
+    }
+  };
+
+  if (loading) return <Typography>Loading...</Typography>;
+  if (error) return <Typography>Error fetching data</Typography>;
 
   return (
     <Box>
-      <TableContainer
-        sx={{
-          width: '100%',
-          overflowX: 'auto',
-          position: 'relative',
-          display: 'block',
-          maxWidth: '100%',
-          '& td, & th': { whiteSpace: 'nowrap' }
-        }}
-      >
-        <Table aria-labelledby="tableTitle">
-          <OrderTableHead order={order} orderBy={orderBy} />
+      <TableContainer>
+        <Table>
+          <TableHead>
+            <TableRow sx={{ backgroundColor: 'green', color: 'white' }}>
+              <TableCell sx={{ color: 'white' }}>Rank</TableCell>
+              <TableCell sx={{ color: 'white' }}>% from 52 Week Low</TableCell>
+              <TableCell sx={{ color: 'white' }}>ETF Code</TableCell>
+              <TableCell sx={{ color: 'white' }}>CMP</TableCell>
+              <TableCell sx={{ color: 'white' }}>Shares</TableCell>
+              <TableCell sx={{ color: 'white' }}>Action</TableCell>
+            </TableRow>
+          </TableHead>
           <TableBody>
-            {stableSort(rows, getComparator(order, orderBy)).map((row, index) => {
-              const labelId = `enhanced-table-checkbox-${index}`;
-
-              return (
-                <TableRow
-                  hover
-                  role="checkbox"
-                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                  tabIndex={-1}
-                  key={row.tracking_no}
-                >
-                  <TableCell component="th" id={labelId} scope="row">
-                    <Link color="secondary"> {row.tracking_no}</Link>
-                  </TableCell>
-                  <TableCell>{row.name}</TableCell>
-                  <TableCell align="right">{row.fat}</TableCell>
-                  <TableCell>
-                    <OrderStatus status={row.carbs} />
-                  </TableCell>
-                  <TableCell align="right">
-                    <NumericFormat value={row.protein} displayType="text" thousandSeparator prefix="$" />
-                  </TableCell>
-                </TableRow>
-              );
-            })}
+            {rows.map((row, index) => (
+              <TableRow key={index}>
+                <TableCell>{row[0]}</TableCell> {/* Rank */}
+                <TableCell>{row[1]}</TableCell> {/* % from 52 Week Low */}
+                <TableCell>{row[2]}</TableCell> {/* ETF Code */}
+                <TableCell>
+                  <NumericFormat value={cmpData[index]} displayType="text" thousandSeparator prefix="$" />
+                </TableCell> {/* CMP */}
+                <TableCell>{Math.floor((totalInvestment / 40) / cmpData[index])}</TableCell> {/* Shares */}
+                <TableCell>
+                  <Button variant="contained" color="success" size="small" sx={{ marginRight: 1 }} onClick={() => handleBuy(index)}>Buy</Button>
+                  {/* <Button variant="contained" color="error" size="small" onClick={() => handleDelete(row[2])}>Delete</Button> */}
+                </TableCell>
+              </TableRow>
+            ))}
           </TableBody>
         </Table>
       </TableContainer>
     </Box>
   );
 }
-
-OrderTableHead.propTypes = { order: PropTypes.any, orderBy: PropTypes.string };
-
-OrderStatus.propTypes = { status: PropTypes.number };
