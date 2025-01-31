@@ -12,12 +12,12 @@ app.use(cors());
 app.use(express.json());
 app.use(bodyParser.json()); // Parse JSON request bodies
 
-const SHEET_ID2 = '1S0gvUBlUNKkt-ho_IOXFOQaLev1x3JpWH5Toqj5-tgw'; // Google Sheet ID
+const SHEET_ID2 = '1vhGPEr8kC5TU3LubC1onE0dyy7eNnDKbnN63X9MhW_Y'; // Google Sheet ID
 const RANGE = 'buy!A2:E';// Range to append data
 
 // Google API OAuth setup
 const auth = new google.auth.GoogleAuth({
-  keyFile: 'service.json', // Path to your service account key JSON
+  keyFile: 'PSA.json', // Path to your service account key JSON
   scopes: [
     'https://www.googleapis.com/auth/spreadsheets',
     'https://www.googleapis.com/auth/drive',
