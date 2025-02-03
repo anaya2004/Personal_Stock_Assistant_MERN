@@ -126,10 +126,10 @@ app.get('/api/get-buy-sheet-data', async (req, res) => {
 
 // API endpoint to handle buy operation
 app.post('/api/buy', async (req, res) => {
-  const { stockDetails, cmp, totalInvestment, date, rowIndex } = req.body;
+  const { stockDetails, cmp, totalInvestment, date, selectedShares } = req.body; // Include selectedShares
 
   // Ensure required data is present in the request
-  if (!stockDetails || !cmp || !totalInvestment || !date || rowIndex === undefined) {
+  if (!stockDetails || !cmp || !totalInvestment || !date || selectedShares === undefined) {
     return res.status(400).json({ error: 'Missing required data' });
   }
 
@@ -137,9 +137,9 @@ app.post('/api/buy', async (req, res) => {
     const shares = Math.floor((totalInvestment / 40) / cmp);
     const stockCode = stockDetails[2]; // Assuming stock code is in the 3rd column (index 2)
     
-    // Prepare data for appending
+    // Prepare data for appending, including selected shares in column F
     const buyData = [
-      [date, cmp, totalInvestment, stockCode, shares, rowIndex], // Append rowIndex to the sheet
+      [date, cmp, totalInvestment, stockCode, shares, selectedShares],
     ];
 
     console.log(req.body);
@@ -148,7 +148,7 @@ app.post('/api/buy', async (req, res) => {
     // Append data to the Google Sheet using axios
     const response = await sheets.spreadsheets.values.append({
       spreadsheetId: SHEET_ID,
-      range: RANGE,
+      range: 'buy!A2:F', // Update range to include column F
       valueInputOption: 'RAW',
       resource: {
         values: buyData,
@@ -157,13 +157,14 @@ app.post('/api/buy', async (req, res) => {
 
     console.log('Data successfully appended to Google Sheets:', response.data);
     res.status(200).json({
-      message: `Successfully bought ${shares} shares of ${stockCode} at CMP ${cmp}`,
+      message: `Successfully bought ${selectedShares} shares of ${stockCode} at CMP ${cmp}.`,
     });
   } catch (error) {
     console.error('Error appending data to Google Sheets:', error);
     res.status(500).json({ error: 'Failed to execute the buy operation.' });
   }
 });
+
 
 // API endpoint to handle delete operation (specific to columns A to E)
 app.delete('/api/delete/:stockCode', async (req, res) => {

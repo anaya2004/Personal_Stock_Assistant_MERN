@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, Box } from '@mui/material';
+import {
+  Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
+  Typography, Box, Modal, MenuItem, Select, FormControl, InputLabel
+} from '@mui/material';
 import { NumericFormat } from 'react-number-format';
 
 export default function OrderTable() {
@@ -9,6 +12,9 @@ export default function OrderTable() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [totalInvestment] = useState(100000);
+  const [open, setOpen] = useState(false);
+  const [selectedRow, setSelectedRow] = useState(null);
+  const [shareCount, setShareCount] = useState(0);
 
   useEffect(() => {
     const fetchStrategyData = async () => {
@@ -26,24 +32,32 @@ export default function OrderTable() {
     fetchStrategyData();
   }, []);
 
-  const handleBuy = async (rowIndex) => {
-    const stockDetails = rows[rowIndex];
-    const cmp = cmpData[rowIndex];
-    const shares = Math.floor((totalInvestment / 40) / cmp);
+  const handleBuy = (rowIndex) => {
+    setSelectedRow({
+      stockDetails: rows[rowIndex],
+      cmp: cmpData[rowIndex],
+      shares: Math.floor((totalInvestment / 40) / cmpData[rowIndex]),
+    });
+    setShareCount(Math.floor((totalInvestment / 40) / cmpData[rowIndex]));
+    setOpen(true);
+  };
+
+  const handleConfirmBuy = async () => {
     const currentDate = new Date().toISOString().split('T')[0];
 
     const buyData = {
-      stockDetails,
-      cmp,
+      stockDetails: selectedRow.stockDetails,
+      cmp: selectedRow.cmp,
+      shares: shareCount,
+      selectedShares: shareCount, // Include selected shares
       totalInvestment,
       date: currentDate,
-      rowIndex,
     };
 
     try {
       const response = await axios.post('http://localhost:5000/api/buy', buyData);
       alert(response.data.message);
-      // Reload the page after the API call is successful
+      setOpen(false);
       window.location.reload();
     } catch (error) {
       console.error('Error during the buy operation:', error);
@@ -60,7 +74,6 @@ export default function OrderTable() {
       alert('An error occurred while deleting. Please try again.');
     }
   };
-
   if (loading) return <Typography>Loading...</Typography>;
   if (error) return <Typography>Error fetching data</Typography>;
 
@@ -89,14 +102,67 @@ export default function OrderTable() {
                 </TableCell> {/* CMP */}
                 <TableCell>{Math.floor((totalInvestment / 40) / cmpData[index])}</TableCell> {/* Shares */}
                 <TableCell>
-                  <Button variant="contained" color="success" size="small" sx={{ marginRight: 1 }} onClick={() => handleBuy(index)}>Buy</Button>
-                  {/* <Button variant="contained" color="error" size="small" onClick={() => handleDelete(row[2])}>Delete</Button> */}
+                  <Button variant="contained" color="success" size="small" onClick={() => handleBuy(index)}>Buy</Button>
                 </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </TableContainer>
+
+      {/* Modal for Buy Summary */}
+      <Modal open={open} onClose={() => setOpen(false)}>
+        <Box sx={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: 400,
+          bgcolor: 'background.paper',
+          boxShadow: 24,
+          p: 4,
+          borderRadius: 2
+        }}>
+          {selectedRow && (
+              <>
+                <Typography variant="h5" component="h2" fontWeight="bold">
+                  Order Summary
+                </Typography>
+                <Typography>Stock: {selectedRow.stockDetails[2]}</Typography>
+                <Typography>CMP: ${selectedRow.cmp}</Typography>
+                <Typography>Total Investment: ${totalInvestment}</Typography>
+                <Typography>Actual Shares: {selectedRow.shares}</Typography>
+
+                {/* Input Box to Increase/Decrease Shares by 1 */}
+                <Box display="flex" alignItems="center" marginY={2}>
+                  <Button 
+                    variant="contained" 
+                    color="secondary" 
+                    onClick={() => setShareCount(prev => Math.max(0, prev - 1))} 
+                    sx={{ marginRight: 1 }}
+                  >
+                    -1
+                  </Button>
+                  <Typography>{shareCount}</Typography>
+                  <Button 
+                    variant="contained" 
+                    color="secondary" 
+                    onClick={() => setShareCount(prev => prev + 1)} 
+                    sx={{ marginLeft: 1 }}
+                  >
+                    +1
+                  </Button>
+                </Box>
+
+                <Button variant="contained" color="success" fullWidth onClick={handleConfirmBuy}>
+                  Confirm Buy
+                </Button>
+              </>
+            )}
+
+
+        </Box>
+      </Modal>
     </Box>
   );
 }
