@@ -19,18 +19,17 @@ const pages = {
       title: 'Login',
       type: 'item',
       url: '/login',
-      icon: icons.LoginOutlined,
-      target: true
+      icon: icons.LoginOutlined
     },
     {
       id: 'register1',
       title: 'Register',
       type: 'item',
       url: '/register',
-      icon: icons.ProfileOutlined,
-      target: true
+      icon: icons.ProfileOutlined
     }
   ]
 };
+
 
 export default pages;

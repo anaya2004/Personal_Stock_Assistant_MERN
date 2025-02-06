@@ -32,9 +32,15 @@ function AuthLogin({ onLogin }) {
     console.log('Login Success:', response);
     const authToken = response.credential;
     localStorage.setItem('googleAuthToken', authToken);
+  
+    // Decode the Google token to get user info
+    const userInfo = JSON.parse(atob(authToken.split('.')[1])); // Decoding JWT payload
+    localStorage.setItem('googleUser', JSON.stringify(userInfo));
+  
     navigate('/'); // Redirect user after login
     if (onLogin) onLogin(response);
   };
+  
 
   const onFailure = (response) => {
     console.error('Login Failed:', response);
