@@ -20,15 +20,17 @@ import ReportAreaChart from './ReportAreaChart';
 import UniqueVisitorCard from './UniqueVisitorCard';
 import SaleReportCard from './SaleReportCard';
 import OrdersTable from './OrdersTable';
+import BuyData from './BuyData';
+import SellRecommendation from './SellRecommendation';
 
 // assets
-import GiftOutlined from '@ant-design/icons/GiftOutlined';
-import MessageOutlined from '@ant-design/icons/MessageOutlined';
-import SettingOutlined from '@ant-design/icons/SettingOutlined';
-import avatar1 from 'assets/images/users/avatar-1.png';
-import avatar2 from 'assets/images/users/avatar-2.png';
-import avatar3 from 'assets/images/users/avatar-3.png';
-import avatar4 from 'assets/images/users/avatar-4.png';
+// import GiftOutlined from '@ant-design/icons/GiftOutlined';
+// import MessageOutlined from '@ant-design/icons/MessageOutlined';
+// import SettingOutlined from '@ant-design/icons/SettingOutlined';
+// import avatar1 from 'assets/images/users/avatar-1.png';
+// import avatar2 from 'assets/images/users/avatar-2.png';
+// import avatar3 from 'assets/images/users/avatar-3.png';
+// import avatar4 from 'assets/images/users/avatar-4.png';
 
 // avatar style
 const avatarSX = {
@@ -57,10 +59,10 @@ export default function DashboardDefault() {
         <Typography variant="h5">Dashboard</Typography>
       </Grid>
       <Grid item xs={12} sm={6} md={4} lg={3}>
-        <AnalyticEcommerce title="Total Page Views" count="4,42,236" percentage={59.3} extra="35,000" />
+        <AnalyticEcommerce title="Total Investment" count="4,42,236" percentage={59.3} extra="35,000" />
       </Grid>
       <Grid item xs={12} sm={6} md={4} lg={3}>
-        <AnalyticEcommerce title="Total Users" count="78,250" percentage={70.5} extra="8,900" />
+        <AnalyticEcommerce title="Daily Investment" count="78,250" percentage={70.5} extra="8,900" />
       </Grid>
       <Grid item xs={12} sm={6} md={4} lg={3}>
         <AnalyticEcommerce title="Total Order" count="18,800" percentage={27.4} isLoss color="warning" extra="1,943" />
@@ -72,19 +74,9 @@ export default function DashboardDefault() {
       <Grid item md={8} sx={{ display: { sm: 'none', md: 'block', lg: 'none' } }} />
 
       {/* row 2 */}
-
       <Grid item xs={12} md={7} lg={8}>
-      <Grid container alignItems="center" justifyContent="space-between">
-          <Grid item>
-            <Typography variant="h5">Recommended Stocks</Typography>
-          </Grid>
-          <Grid item />
-        </Grid>
-        <MainCard sx={{ mt: 2 }} content={false}>
-          <OrdersTable />
-        </MainCard>
+        <UniqueVisitorCard />
       </Grid>
-
       <Grid item xs={12} md={5} lg={4}>
         <Grid container alignItems="center" justifyContent="space-between">
           <Grid item>
@@ -107,9 +99,18 @@ export default function DashboardDefault() {
 
       {/* row 3 */}
       <Grid item xs={12} md={7} lg={8}>
-        <UniqueVisitorCard />
-      </Grid>
-      <Grid item xs={12} md={5} lg={4}>
+        <Grid container alignItems="center" justifyContent="space-between">
+          <Grid item>
+            <Typography variant="h5">TODAY'S BUY RECOMMENDATION</Typography>
+          </Grid>
+          <Grid item />
+        </Grid>
+        <MainCard sx={{ mt: 2 }} content={false}>
+          <OrdersTable />
+        </MainCard>
+        </Grid>
+
+        <Grid item xs={12} md={5} lg={4}>
         <Grid container alignItems="center" justifyContent="space-between">
           <Grid item>
             <Typography variant="h5">Analytics Report</Typography>
@@ -135,11 +136,85 @@ export default function DashboardDefault() {
         </MainCard>
       </Grid>
 
+        <Grid item xs={12} md={7} lg={8}> 
+      <Grid container alignItems="center" justifyContent="space-between">
+          <Grid item>
+            <Typography variant="h5">SELL RECOMMENDATION</Typography>
+          </Grid>
+          <Grid item />
+        </Grid>
+        <MainCard sx={{ mt: 2 }} content={false}>
+        <SellRecommendation />
+        </MainCard>
+        </Grid>
+
+        
+
+        <Grid item xs={12} md={7} lg={8}> 
+        <Grid container alignItems="center" justifyContent="space-between">
+          <Grid item>
+            <Typography variant="h5">BUY DATA</Typography>
+          </Grid>
+          <Grid item />
+        </Grid>
+        <MainCard sx={{ mt: 2 }} content={false}>
+        <BuyData />
+        </MainCard>
+     
+      </Grid>
+      {/* <Grid item xs={12} md={5} lg={4}>
+        <Grid container alignItems="center" justifyContent="space-between">
+          <Grid item>
+            <Typography variant="h5">Analytics Report</Typography>
+          </Grid>
+          <Grid item />
+        </Grid>
+        <MainCard sx={{ mt: 2 }} content={false}>
+          <List sx={{ p: 0, '& .MuiListItemButton-root': { py: 2 } }}>
+            <ListItemButton divider>
+              <ListItemText primary="Company Finance Growth" />
+              <Typography variant="h5">+45.14%</Typography>
+            </ListItemButton>
+            <ListItemButton divider>
+              <ListItemText primary="Company Expenses Ratio" />
+              <Typography variant="h5">0.58%</Typography>
+            </ListItemButton>
+            <ListItemButton>
+              <ListItemText primary="Business Risk Cases" />
+              <Typography variant="h5">Low</Typography>
+            </ListItemButton>
+          </List>
+          <ReportAreaChart />
+        </MainCard>
+      </Grid> */}
+
+      {/* <Grid item xs={12} md={5} lg={4}>
+        <Grid container alignItems="center" justifyContent="space-between">
+          <Grid item>
+            <Typography variant="h5">BUY</Typography>
+          </Grid>
+          <Grid item />
+        </Grid>
+        <MainCard sx={{ mt: 2 }} content={false}>
+        <BuyData />
+        </MainCard>
+      </Grid> */}
       {/* row 4 */}
-      <Grid item xs={12} md={7} lg={8}>
+      {/* <Grid item xs={12} md={7} lg={8}>
         <SaleReportCard />
       </Grid>
       <Grid item xs={12} md={5} lg={4}>
+        <Grid container alignItems="center" justifyContent="space-between">
+          <Grid item>
+            <Typography variant="h5">BUY</Typography>
+          </Grid>
+          <Grid item />
+        </Grid>
+        <MainCard sx={{ mt: 2 }} content={false}>
+        <BuyData />
+        </MainCard>
+      </Grid> */}
+      {/* <Grid item xs={12} md={5} lg={4}>
         <Grid container alignItems="center" justifyContent="space-between">
           <Grid item>
             <Typography variant="h5">Transaction History</Typography>
@@ -242,7 +317,9 @@ export default function DashboardDefault() {
             </Button>
           </Stack>
         </MainCard>
-      </Grid>
+      </Grid> */}
+      
     </Grid>
+      
   );
 }
