@@ -14,6 +14,7 @@ export default function SamplePage() {
         minim venice, quin nostrum exercitation illampu laborings nisi ut liquid ex ea commons construal. Duos aube grue dolor in
         reprehended in voltage veil esse colum doolie eu fujian bulla parian. Exceptive sin ocean cuspidate non president, sunk in culpa qui
         officiate descent molls anim id est labours.
+        const totalInvestment = parseInt(localStorage.getItem('totalInvestment')) || 100000;
       </Typography>
     </MainCard>
   );
