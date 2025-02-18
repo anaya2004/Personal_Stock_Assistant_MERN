@@ -26,7 +26,7 @@ export default function NavCard() {
           </Typography>
         </Stack>
         <AnimateButton>
-          <Button component={Link} target="_blank" href="http://www.testingmcafeesites.com/index.html" variant="contained" color="success" size="small">
+          <Button component={Link} target="_blank" href="https://personalstock.mystrikingly.com" variant="contained" color="success" size="small">
             Pro
           </Button>
         </AnimateButton>
