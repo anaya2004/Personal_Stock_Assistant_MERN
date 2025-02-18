@@ -37,7 +37,10 @@
     "axios": "^1.7.9",
     "formik": "^2.4.5",
     "framer-motion": "^11.0.8",
+<<<<<<< HEAD
     "gapi-script": "^1.2.0",
+=======
+>>>>>>> origin/aditya
     "lodash": "^4.17.21",
     "process": "^0.11.10",
     "prop-types": "^15.8.1",
@@ -47,14 +50,23 @@
     "react-device-detect": "^2.2.3",
     "react-dom": "^18.2.0",
     "react-number-format": "^5.3.3",
+<<<<<<< HEAD
     "react-redux": "^9.2.0",
     "react-router": "^6.22.3",
     "react-router-dom": "^6.28.2",
+=======
+    "react-router": "^6.22.3",
+    "react-router-dom": "^6.22.3",
+>>>>>>> origin/aditya
     "simplebar-react": "^3.2.4",
     "slick-carousel": "^1.8.1",
     "swr": "^2.2.5",
     "util": "^0.12.5",
+<<<<<<< HEAD
     "vite": "^5.4.14",
+=======
+    "vite": "^5.2.10",
+>>>>>>> origin/aditya
     "vite-jsconfig-paths": "^2.0.1",
     "web-vitals": "^3.5.2",
     "yup": "^1.4.0"

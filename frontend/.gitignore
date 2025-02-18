@@ -105,6 +105,10 @@ dist
 .tern-port
 
 # wincompare file
+<<<<<<< HEAD
 .bak
 
 node_modules
+=======
+.bak
+>>>>>>> origin/aditya
