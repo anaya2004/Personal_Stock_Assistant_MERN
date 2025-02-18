@@ -59,7 +59,7 @@ export default function Profile() {
       setUser(storedUser);
     }
   }, []);
-
+  
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen);
   };
@@ -104,7 +104,7 @@ export default function Profile() {
         onClick={handleToggle}
       >
         <Stack direction="row" spacing={1.25} alignItems="center" sx={{ p: 0.5 }}>
-          <Avatar alt="profile user" src={user?.picture || defaultAvatar} size="sm" />
+        <Avatar alt="profile user" src={user?.picture || defaultAvatar} size="sm" />
           <Typography variant="subtitle1" sx={{ textTransform: 'capitalize' }}>
             {user?.name || 'Guest'}
           </Typography>
@@ -137,7 +137,11 @@ export default function Profile() {
                     <Grid container justifyContent="space-between" alignItems="center">
                       <Grid item>
                         <Stack direction="row" spacing={1.25} alignItems="center">
-                          <Avatar alt="profile user" src={user?.picture || defaultAvatar} sx={{ width: 32, height: 32 }} />
+                        <Avatar 
+  alt="profile user" 
+  src={user?.picture && user.picture !== "null" ? user.picture : defaultAvatar} 
+  size="sm" 
+/>
                           <Stack>
                             <Typography variant="h6">{user?.name || 'Guest'}</Typography>
                             <Typography variant="body2" color="text.secondary">

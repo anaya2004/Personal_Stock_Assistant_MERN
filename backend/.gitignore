@@ -1,9 +1,5 @@
 node_modules
 service.json
-<<<<<<< HEAD
 auth.js
 client.json
 PSA.json
-=======
-auth.js
->>>>>>> origin/aditya
