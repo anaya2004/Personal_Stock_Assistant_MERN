@@ -29,10 +29,7 @@ const auth = (state = initialState, action) => {
       };
     }
     case LOGOUT: {
-<<<<<<< HEAD
       localStorage.removeItem('user');
-=======
->>>>>>> origin/aditya
       return {
         ...state,
         isInitialized: true,

@@ -10,11 +10,7 @@ const Shadow = Loadable(lazy(() => import('pages/component-overview/shadows')));
 const DashboardDefault = Loadable(lazy(() => import('pages/dashboard/index')));
 
 // render - sample page
-<<<<<<< HEAD
-const SamplePage = Loadable(lazy(() => import('pages/extra-pages/sample-page')));
-=======
 const SamplePage = Loadable(lazy(() => import('pages/extra-pages/TotalInvestment')));
->>>>>>> origin/aditya
 
 // ==============================|| MAIN ROUTING ||============================== //
 

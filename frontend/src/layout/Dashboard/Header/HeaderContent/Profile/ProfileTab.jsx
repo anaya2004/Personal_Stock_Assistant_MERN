@@ -23,15 +23,6 @@ export default function ProfileTab() {
     setSelectedIndex(index);
   };
 
-<<<<<<< HEAD
-    const handleLogout = () => {
-    dispatch({ type: LOGOUT });
-    localStorage.removeItem('user'); // Clear stored user data
-    navigate('/login'); // Redirect to login page
-  };
-
-=======
->>>>>>> origin/aditya
   return (
     <List component="nav" sx={{ p: 0, '& .MuiListItemIcon-root': { minWidth: 32 } }}>
       <ListItemButton selected={selectedIndex === 0} onClick={(event) => handleListItemClick(event, 0, '/apps/profiles/user/personal')}>
@@ -59,11 +50,7 @@ export default function ProfileTab() {
         </ListItemIcon>
         <ListItemText primary="Billing" />
       </ListItemButton>
-<<<<<<< HEAD
-      <ListItemButton onClick={handleLogout}>
-=======
       <ListItemButton selected={selectedIndex === 2}>
->>>>>>> origin/aditya
         <ListItemIcon>
           <LogoutOutlined />
         </ListItemIcon>

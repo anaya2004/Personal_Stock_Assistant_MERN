@@ -25,16 +25,10 @@ function BuyData() {
               <TableRow sx={{ backgroundColor: 'green', color: 'white' }}>
                 <TableCell  sx={{ color: 'white' }}>Date</TableCell>
                 <TableCell sx={{ color: 'white' }}>CMP</TableCell>
-<<<<<<< HEAD
-                <TableCell sx={{ color: 'white' }}>Total Investment</TableCell>
-                <TableCell sx={{ color: 'white' }}>Stock Code</TableCell>
-                <TableCell sx={{ color: 'white' }}>Shares</TableCell>
-=======
                 <TableCell sx={{ color: 'white' }}>Stock Code</TableCell>
                 <TableCell sx={{ color: 'white' }}>Suggested QTY</TableCell>
                 <TableCell sx={{ color: 'white' }}>BUY PRICE</TableCell>
                 <TableCell sx={{ color: 'white' }}>Actual QTY</TableCell>
->>>>>>> origin/aditya
               </TableRow>
             </TableHead>
             <TableBody>
@@ -45,10 +39,7 @@ function BuyData() {
                   <TableCell>{row[2]}</TableCell>
                   <TableCell>{row[3]}</TableCell>
                   <TableCell>{row[4]}</TableCell>
-<<<<<<< HEAD
-=======
                   <TableCell>{row[5]}</TableCell>
->>>>>>> origin/aditya
                 </TableRow>
               ))}
             </TableBody>
@@ -61,8 +52,4 @@ function BuyData() {
   );
 }
 
-<<<<<<< HEAD
 export default BuyData;
-=======
-export default BuyData;
->>>>>>> origin/aditya

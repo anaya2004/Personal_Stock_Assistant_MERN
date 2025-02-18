@@ -12,21 +12,12 @@ app.use(cors());
 app.use(express.json());
 app.use(bodyParser.json()); // Parse JSON request bodies
 
-<<<<<<< HEAD
 const SHEET_ID2 = '1vhGPEr8kC5TU3LubC1onE0dyy7eNnDKbnN63X9MhW_Y'; // Google Sheet ID
 const RANGE = 'buy!A2:E';// Range to append data
 
 // Google API OAuth setup
 const auth = new google.auth.GoogleAuth({
   keyFile: 'PSA.json', // Path to your service account key JSON
-=======
-const SHEET_ID2 = '1S0gvUBlUNKkt-ho_IOXFOQaLev1x3JpWH5Toqj5-tgw'; // Google Sheet ID
-const RANGE = 'buy!A3:F';// Range to append data
-
-// Google API OAuth setup
-const auth = new google.auth.GoogleAuth({
-  keyFile: 'service.json', // Path to your service account key JSON
->>>>>>> origin/aditya
   scopes: [
     'https://www.googleapis.com/auth/spreadsheets',
     'https://www.googleapis.com/auth/drive',
@@ -135,39 +126,14 @@ app.get('/api/get-buy-sheet-data', async (req, res) => {
 
 // API endpoint to handle buy operation
 app.post('/api/buy', async (req, res) => {
-<<<<<<< HEAD
-  const { stockDetails, cmp, totalInvestment, date, rowIndex } = req.body;
-
-  // Ensure required data is present in the request
-  if (!stockDetails || !cmp || !totalInvestment || !date || rowIndex === undefined) {
-=======
   const { stockDetails, cmp, shares, selectedShares, buyPrice, date } = req.body;
 
   // Ensure required data is present
   if (!stockDetails || !cmp || !date || selectedShares === undefined || !buyPrice) {
->>>>>>> origin/aditya
     return res.status(400).json({ error: 'Missing required data' });
   }
 
   try {
-<<<<<<< HEAD
-    const shares = Math.floor((totalInvestment / 40) / cmp);
-    const stockCode = stockDetails[2]; // Assuming stock code is in the 3rd column (index 2)
-    
-    // Prepare data for appending
-    const buyData = [
-      [date, cmp, totalInvestment, stockCode, shares, rowIndex], // Append rowIndex to the sheet
-    ];
-
-    console.log(req.body);
-    console.log(buyData);
-
-    // Append data to the Google Sheet using axios
-    const response = await sheets.spreadsheets.values.append({
-      spreadsheetId: SHEET_ID,
-      range: RANGE,
-      valueInputOption: 'RAW',
-=======
     const stockCode = stockDetails[2]; // Assuming stock code is in the 3rd column (index 2)
 
     // Prepare data in the correct order for Google Sheets
@@ -181,7 +147,6 @@ app.post('/api/buy', async (req, res) => {
       spreadsheetId: SHEET_ID,
       range: 'buy!A3:F', // Ensure this matches the correct sheet name
       valueInputOption: 'USER_ENTERED',
->>>>>>> origin/aditya
       resource: {
         values: buyData,
       },
@@ -189,11 +154,7 @@ app.post('/api/buy', async (req, res) => {
 
     console.log('Data successfully appended to Google Sheets:', response.data);
     res.status(200).json({
-<<<<<<< HEAD
-      message: `Successfully bought ${shares} shares of ${stockCode} at CMP ${cmp}`,
-=======
       message: `Successfully bought ${selectedShares} shares of ${stockCode} at CMP ${cmp} with Buy Price ${buyPrice}.`,
->>>>>>> origin/aditya
     });
   } catch (error) {
     console.error('Error appending data to Google Sheets:', error);
@@ -201,8 +162,6 @@ app.post('/api/buy', async (req, res) => {
   }
 });
 
-<<<<<<< HEAD
-=======
 app.get('/api/sell-recommendations', async (req, res) => {
   try {
     // 1️⃣ Fetch Buy Sheet Data
@@ -392,7 +351,6 @@ app.post('/api/sell', async (req, res) => {
 });
 
 
->>>>>>> origin/aditya
 // API endpoint to handle delete operation (specific to columns A to E)
 app.delete('/api/delete/:stockCode', async (req, res) => {
     const { stockCode } = req.params; // Correctly retrieve stockCode from URL parameters
@@ -568,8 +526,4 @@ app.put('/api/update', async (req, res) => {
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
-<<<<<<< HEAD
 });
-=======
-});
->>>>>>> origin/aditya

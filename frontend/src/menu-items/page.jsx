@@ -19,30 +19,17 @@ const pages = {
       title: 'Login',
       type: 'item',
       url: '/login',
-<<<<<<< HEAD
       icon: icons.LoginOutlined
-=======
-      icon: icons.LoginOutlined,
-      target: true
->>>>>>> origin/aditya
     },
     {
       id: 'register1',
       title: 'Register',
       type: 'item',
       url: '/register',
-<<<<<<< HEAD
       icon: icons.ProfileOutlined
-=======
-      icon: icons.ProfileOutlined,
-      target: true
->>>>>>> origin/aditya
     }
   ]
 };
 
-<<<<<<< HEAD
 
-=======
->>>>>>> origin/aditya
 export default pages;

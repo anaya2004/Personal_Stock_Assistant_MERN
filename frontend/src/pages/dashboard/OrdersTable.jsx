@@ -1,13 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-<<<<<<< HEAD
-import { Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, Box } from '@mui/material';
-=======
 import {
   Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
   Typography, Box, Modal
 } from '@mui/material';
->>>>>>> origin/aditya
 import { NumericFormat } from 'react-number-format';
 
 export default function OrderTable() {
@@ -15,9 +11,6 @@ export default function OrderTable() {
   const [cmpData, setCmpData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
-<<<<<<< HEAD
-  const [totalInvestment] = useState(100000);
-=======
   const [open, setOpen] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
   const [shareCount, setShareCount] = useState(0);
@@ -25,7 +18,6 @@ export default function OrderTable() {
   const [totalInvestment, setTotalInvestment] = useState(
     localStorage.getItem('totalInvestment') || 100000
   );
->>>>>>> origin/aditya
 
   useEffect(() => {
     const fetchStrategyData = async () => {
@@ -41,22 +33,6 @@ export default function OrderTable() {
       }
     };
     fetchStrategyData();
-<<<<<<< HEAD
-  }, []);
-
-  const handleBuy = async (rowIndex) => {
-    const stockDetails = rows[rowIndex];
-    const cmp = cmpData[rowIndex];
-    const shares = Math.floor((totalInvestment / 40) / cmp);
-    const currentDate = new Date().toISOString().split('T')[0];
-
-    const buyData = {
-      stockDetails,
-      cmp,
-      totalInvestment,
-      date: currentDate,
-      rowIndex,
-=======
 
     // Update investment when changed in localStorage
     const handleStorageChange = () => {
@@ -92,17 +68,12 @@ export default function OrderTable() {
       selectedShares: shareCount, // Actual Qty
       buyPrice, // Now included
       date: currentDate,
->>>>>>> origin/aditya
     };
 
     try {
       const response = await axios.post('http://localhost:5000/api/buy', buyData);
       alert(response.data.message);
-<<<<<<< HEAD
-      // Reload the page after the API call is successful
-=======
       setOpen(false);
->>>>>>> origin/aditya
       window.location.reload();
     } catch (error) {
       console.error('Error during the buy operation:', error);
@@ -110,19 +81,6 @@ export default function OrderTable() {
     }
   };
 
-<<<<<<< HEAD
-  const handleDelete = async (stockCode) => {
-    try {
-      const response = await axios.delete(`http://localhost:5000/api/delete/${stockCode}`);
-      alert(response.data.message);
-    } catch (error) {
-      console.error('Error deleting strategy:', error);
-      alert('An error occurred while deleting. Please try again.');
-    }
-  };
-
-=======
->>>>>>> origin/aditya
   if (loading) return <Typography>Loading...</Typography>;
   if (error) return <Typography>Error fetching data</Typography>;
 
@@ -147,31 +105,17 @@ export default function OrderTable() {
                 <TableCell>{row[1]}</TableCell> {/* % from 52 Week Low */}
                 <TableCell>{row[2]}</TableCell> {/* ETF Code */}
                 <TableCell>
-<<<<<<< HEAD
-                  <NumericFormat value={cmpData[index]} displayType="text" thousandSeparator prefix="$" />
-                </TableCell> {/* CMP */}
-                <TableCell>{Math.floor((totalInvestment / 40) / cmpData[index])}</TableCell> {/* Shares */}
-                <TableCell>
-                  <Button variant="contained" color="success" size="small" sx={{ marginRight: 1 }} onClick={() => handleBuy(index)}>Buy</Button>
-                  {/* <Button variant="contained" color="error" size="small" onClick={() => handleDelete(row[2])}>Delete</Button> */}
-=======
                   <NumericFormat value={cmpData[index]} displayType="text" thousandSeparator prefix="₹" />
                 </TableCell> {/* CMP */}
                 <TableCell>{Math.floor((totalInvestment / 40) / cmpData[index])}</TableCell> {/* Shares */}
                 <TableCell>
                   <Button variant="contained" color="success" size="small" onClick={() => handleBuy(index)}>Buy</Button>
->>>>>>> origin/aditya
                 </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </TableContainer>
-<<<<<<< HEAD
-    </Box>
-  );
-}
-=======
 
       {/* Modal for Buy Summary */}
       <Modal open={open} onClose={() => setOpen(false)}>
@@ -242,4 +186,3 @@ export default function OrderTable() {
     </Box>
   );
 }
->>>>>>> origin/aditya
