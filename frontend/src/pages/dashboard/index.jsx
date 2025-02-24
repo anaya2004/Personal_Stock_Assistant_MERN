@@ -106,7 +106,6 @@ export default function DashboardDefault() {
           <MonthlyBarChart />
         </MainCard>
       </Grid>
-
       {/* row 3 */}
       <Grid item xs={12} md={7} lg={8}>
         <Grid container alignItems="center" justifyContent="space-between">

@@ -1,22 +1,41 @@
 import PropTypes from 'prop-types';
-import { useMemo } from 'react';
+import { useMemo, useState, useEffect, createContext } from 'react';
 
 // material-ui
 import { CssBaseline, StyledEngineProvider } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-// project import
+// project imports
 import Palette from './palette';
 import Typography from './typography';
 import CustomShadows from './shadows';
 import componentsOverride from './overrides';
 
-// ==============================|| DEFAULT THEME - MAIN  ||============================== //
+
+
+// ==============================|| THEME CONTEXT ||============================== //
+export const ThemeModeContext = createContext();
 
 export default function ThemeCustomization({ children }) {
-  const theme = Palette('light', 'default');
+  // Load saved theme from localStorage or default to 'light'
+  const [themeMode, setThemeMode] = useState(localStorage.getItem('themeMode') || 'light');
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+  // Save theme preference in localStorage
+  useEffect(() => {
+    localStorage.setItem('themeMode', themeMode);
+  }, [themeMode]);
+
+  // Toggle Dark/Light Mode
+  const toggleTheme = () => {
+    setThemeMode((prevMode) => {
+      const newMode = prevMode === 'light' ? 'dark' : 'light';
+      console.log("Theme changed to:", newMode);  // Debugging
+      return newMode;
+    });
+  };
+  
+  const theme = Palette(themeMode, 'default');
+  
   const themeTypography = Typography(`'Public Sans', sans-serif`);
   const themeCustomShadows = useMemo(() => CustomShadows(theme), [theme]);
 
@@ -50,12 +69,14 @@ export default function ThemeCustomization({ children }) {
   themes.components = componentsOverride(themes);
 
   return (
-    <StyledEngineProvider injectFirst>
-      <ThemeProvider theme={themes}>
-        <CssBaseline />
-        {children}
-      </ThemeProvider>
-    </StyledEngineProvider>
+    <ThemeModeContext.Provider value={{ themeMode, toggleTheme }}>
+      <StyledEngineProvider injectFirst>
+        <ThemeProvider theme={themes}>
+          <CssBaseline />
+          {children}
+        </ThemeProvider>
+      </StyledEngineProvider>
+    </ThemeModeContext.Provider>
   );
 }
 

@@ -29,6 +29,7 @@ const auth = (state = initialState, action) => {
       };
     }
     case LOGOUT: {
+      localStorage.removeItem('user');
       return {
         ...state,
         isInitialized: true,
