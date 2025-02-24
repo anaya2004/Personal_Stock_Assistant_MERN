@@ -104,7 +104,7 @@ export default function Profile() {
         onClick={handleToggle}
       >
         <Stack direction="row" spacing={1.25} alignItems="center" sx={{ p: 0.5 }}>
-        <Avatar alt="profile user" src={user?.picture || defaultAvatar} size="sm" />
+          <Avatar alt="profile user" src={user?.picture || defaultAvatar} size="sm" />
           <Typography variant="subtitle1" sx={{ textTransform: 'capitalize' }}>
             {user?.name || 'Guest'}
           </Typography>
@@ -137,11 +137,11 @@ export default function Profile() {
                     <Grid container justifyContent="space-between" alignItems="center">
                       <Grid item>
                         <Stack direction="row" spacing={1.25} alignItems="center">
-                        <Avatar 
-  alt="profile user" 
-  src={user?.picture && user.picture !== "null" ? user.picture : defaultAvatar} 
-  size="sm" 
-/>
+                          <Avatar 
+                            alt="profile user" 
+                            src={user?.picture && user.picture !== "null" ? user.picture : defaultAvatar} 
+                            size="sm" 
+                          />
                           <Stack>
                             <Typography variant="h6">{user?.name || 'Guest'}</Typography>
                             <Typography variant="body2" color="text.secondary">
@@ -164,30 +164,8 @@ export default function Profile() {
 
                   <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                     <Tabs variant="fullWidth" value={value} onChange={handleChange} aria-label="profile tabs">
-                      <Tab
-                        sx={{
-                          display: 'flex',
-                          flexDirection: 'row',
-                          justifyContent: 'center',
-                          alignItems: 'center',
-                          textTransform: 'capitalize'
-                        }}
-                        icon={<UserOutlined style={{ marginBottom: 0, marginRight: '10px' }} />}
-                        label="Profile"
-                        {...a11yProps(0)}
-                      />
-                      <Tab
-                        sx={{
-                          display: 'flex',
-                          flexDirection: 'row',
-                          justifyContent: 'center',
-                          alignItems: 'center',
-                          textTransform: 'capitalize'
-                        }}
-                        icon={<SettingOutlined style={{ marginBottom: 0, marginRight: '10px' }} />}
-                        label="Setting"
-                        {...a11yProps(1)}
-                      />
+                      <Tab icon={<UserOutlined />} label="Profile" {...a11yProps(0)} />
+                      <Tab icon={<SettingOutlined />} label="Setting" {...a11yProps(1)} />
                     </Tabs>
                   </Box>
                   <TabPanel value={value} index={0} dir={theme.direction}>
