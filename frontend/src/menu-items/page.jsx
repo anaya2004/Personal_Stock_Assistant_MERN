@@ -1,17 +1,18 @@
 // assets
-import { LoginOutlined, ProfileOutlined } from '@ant-design/icons';
+import { LoginOutlined, ProfileOutlined, TableOutlined } from '@ant-design/icons';
 
 // icons
 const icons = {
   LoginOutlined,
-  ProfileOutlined
+  ProfileOutlined,
+  TableOutlined 
 };
 
 // ==============================|| MENU ITEMS - EXTRA PAGES ||============================== //
 
 const pages = {
   id: 'authentication',
-  title: 'Authentication',
+  title: 'authentication',
   type: 'group',
   children: [
     {
@@ -27,7 +28,21 @@ const pages = {
       type: 'item',
       url: '/register',
       icon: icons.ProfileOutlined
-    }
+    },
+    {
+      id: 'buy_data1',
+      title: 'Buy Data',
+      type: 'item',
+      url: '/buy-data',
+      icon: icons.TableOutlined
+    },
+    {
+      id: 'sell_data1',
+      title: 'Sell Data',
+      type: 'item',
+      url: '/sell-data',
+      icon: icons.TableOutlined
+    },
   ]
 };
 

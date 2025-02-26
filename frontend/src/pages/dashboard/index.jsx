@@ -168,13 +168,11 @@ export default function DashboardDefault() {
         <Grid item xs={12} md={7} lg={8}> 
         <Grid container alignItems="center" justifyContent="space-between">
           <Grid item>
-            <Typography variant="h5">BUY DATA</Typography>
+            <Typography variant="h5"></Typography>
           </Grid>
           <Grid item />
         </Grid>
-        <MainCard sx={{ mt: 2 }} content={false}>
-        <BuyData />
-        </MainCard>
+        
      
       </Grid>
 
@@ -184,13 +182,11 @@ export default function DashboardDefault() {
       <Grid item xs={15} md={8} lg={18}> 
         <Grid container alignItems="center" justifyContent="space-between">
           <Grid item>
-            <Typography variant="h5">SELL DATA</Typography>
+            <Typography variant="h5"></Typography>
           </Grid>
           <Grid item />
         </Grid>
-        <MainCard sx={{ mt: 2 }} content={false}>
-        <SellData />
-        </MainCard>
+       
      
       </Grid>
       {/* <Grid item xs={12} md={5} lg={4}>
