@@ -28,6 +28,8 @@ const pages = {
       url: '/register',
       icon: icons.ProfileOutlined
     }
+
+    
   ]
 };
 
