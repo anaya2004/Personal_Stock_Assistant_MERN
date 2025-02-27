@@ -28,6 +28,7 @@ const pages = {
       type: 'item',
       url: '/register',
       icon: icons.ProfileOutlined
+
     },
     {
       id: 'buy_data1',
@@ -43,6 +44,7 @@ const pages = {
       url: '/sell-data',
       icon: icons.TableOutlined
     },
+    }
   ]
 };
 

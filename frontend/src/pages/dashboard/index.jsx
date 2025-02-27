@@ -165,7 +165,7 @@ export default function DashboardDefault() {
 
         
 
-        <Grid item xs={12} md={7} lg={8}> 
+        {/* <Grid item xs={12} md={7} lg={8}> 
         <Grid container alignItems="center" justifyContent="space-between">
           <Grid item>
             <Typography variant="h5"></Typography>
@@ -188,7 +188,7 @@ export default function DashboardDefault() {
         </Grid>
        
      
-      </Grid>
+      </Grid> */}
       {/* <Grid item xs={12} md={5} lg={4}>
         <Grid container alignItems="center" justifyContent="space-between">
           <Grid item>
