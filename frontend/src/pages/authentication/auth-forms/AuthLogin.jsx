@@ -46,8 +46,10 @@ function AuthLogin({ onLogin }) {
     console.error('Login Failed:', response);
   };
 
+  const clientId = process.env.REACT_APP_GOOGLE_CLIENT_ID;
+
   return (
-    <GoogleOAuthProvider clientId="345535269501-scljiqium691v9b9kvs4tntr45boqts6.apps.googleusercontent.com">
+    <GoogleOAuthProvider clientId={clientId}>
       <div className="auth-container">
         <h2>Login with Google</h2>
         <GoogleLogin
