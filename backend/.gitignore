@@ -3,8 +3,3 @@ service.json
 auth.js
 client.json
 PSA.json
-.env
-
-package.json
-
-package-lock.json

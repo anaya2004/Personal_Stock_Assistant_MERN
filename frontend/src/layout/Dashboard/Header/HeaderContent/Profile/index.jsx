@@ -76,8 +76,8 @@ export default function Profile() {
     localStorage.removeItem('googleUser');
     setUser(null);
     setOpen(false);
-    window.location.replace("/free/login"); // 🔹 Ensure clean redirect
-};
+    window.location.reload(); // Refresh to reflect logout state
+  };
 
   const [value, setValue] = useState(0);
 
