@@ -4,3 +4,6 @@ auth.js
 client.json
 PSA.json
 .env
+
+CLIENT_ID=345535269501-scljiqium691v9b9kvs4tntr45boqts6.apps.googleusercontent.com
+CLIENT_SECRET=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
