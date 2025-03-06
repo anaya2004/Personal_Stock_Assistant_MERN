@@ -3,28 +3,33 @@ import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 import { gapi } from 'gapi-script';
 import { useNavigate } from 'react-router-dom';
 
+const apiKey = process.env.REACT_APP_GOOGLE_API_KEY;
+const clientId = process.env.REACT_APP_GOOGLE_CLIENT_ID;
+const discoveryDocs = [process.env.REACT_APP_GOOGLE_DISCOVERY_DOCS];
+const scope = process.env.REACT_APP_GOOGLE_SCOPE;
+
 function AuthLogin({ onLogin }) {
   const navigate = useNavigate();
 
+  const loadGAPI = () => {
+    if (window.gapi) {
+      gapi.load("client:auth2", () => {
+        gapi.client
+          .init({
+            apiKey,
+            clientId,
+            discoveryDocs,
+            scope,
+          })
+          .then(() => console.log("Google API initialized"))
+          .catch((error) => console.error("Google API initialization failed:", error));
+      });
+    } else {
+      console.error("gapi is not available.");
+    }
+  };
+  
   useEffect(() => {
-    const loadGAPI = () => {
-      if (window.gapi) {
-        gapi.load('client:auth2', () => {
-          gapi.client
-            .init({
-              apiKey: 'AIzaSyCRnh_T5iaKPCavpwRj-JZJExBYtQDotIg',
-              clientId: '345535269501-scljiqium691v9b9kvs4tntr45boqts6.apps.googleusercontent.com',
-              discoveryDocs: ['https://sheets.googleapis.com/$discovery/rest?version=v4'],
-              scope: 'https://www.googleapis.com/auth/spreadsheets.readonly',
-            })
-            .then(() => console.log('Google API initialized'))
-            .catch((error) => console.error('Google API initialization failed:', error));
-        });
-      } else {
-        console.error('gapi is not available.');
-      }
-    };
-
     loadGAPI();
   }, []);
 
@@ -46,7 +51,7 @@ function AuthLogin({ onLogin }) {
     console.error('Login Failed:', response);
   };
 
-  const clientId = process.env.REACT_APP_GOOGLE_CLIENT_ID;
+ 
 
   return (
     <GoogleOAuthProvider clientId={clientId}>
