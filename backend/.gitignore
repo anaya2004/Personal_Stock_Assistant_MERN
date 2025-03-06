@@ -3,3 +3,4 @@ service.json
 auth.js
 client.json
 PSA.json
+.env
