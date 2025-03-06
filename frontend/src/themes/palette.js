@@ -35,20 +35,20 @@ export default function Palette(mode = 'light', presetColor = 'default') {
         black: '#000',
         white: '#fff'
       },
-      primary: paletteColor.primary || { main: '#1976d2' }, // Professional Blue
-      secondary: paletteColor.secondary || { main: '#64b5f6' }, // Light Blue
+      primary: paletteColor.primary || { main: '#d32f2f' }, // Red Theme
+      secondary: paletteColor.secondary || { main: '#ff7961' }, // Light Red
       text: {
-        primary: mode === 'dark' ? '#e0e0e0' : paletteColor.grey[8] || '#212121', // Lighter Grey in dark mode, Dark Grey in light mode
-        secondary: mode === 'dark' ? '#bdbdbd' : paletteColor.grey[6] || '#757575', // Slightly Lighter Grey in dark mode, Medium Grey in light mode
+        primary: mode === 'dark' ? '#e0e0e0' : paletteColor.grey[8] || '#212121',
+        secondary: mode === 'dark' ? '#bdbdbd' : paletteColor.grey[6] || '#757575',
         disabled: paletteColor.grey[4] || '#bdbdbd'
       },
       action: {
         disabled: paletteColor.grey[3] || '#e0e0e0'
       },
-      divider: paletteColor.grey[2] || '#eeeeee', // Light Grey Divider
+      divider: paletteColor.grey[2] || '#eeeeee',
       background: {
-        paper: mode === 'dark' ? '#303030' : '#ffffff', // Dark Grey/White for paper
-        default: mode === 'dark' ? '#121212' : '#f5f5f5' // Darker/Lighter Grey for background
+        paper: mode === 'dark' ? '#2c0b0b' : '#ffffff', // Dark Red/White for paper
+        default: mode === 'dark' ? '#1a0606' : '#fce8e8' // Darker/Lighter Red for background
       }
     }
   });
