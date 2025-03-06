@@ -105,13 +105,10 @@ dist
 .tern-port
 
 # wincompare file
+<<<<<<< HEAD
 .bak
 
-.env
-.env.local
-
-
-yarn.lock
-
-package.json
-package-lock.json
+node_modules
+=======
+.bak
+>>>>>>> origin/aditya
