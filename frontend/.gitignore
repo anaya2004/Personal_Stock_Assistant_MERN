@@ -109,3 +109,9 @@ dist
 
 .env
 .env.local
+
+
+yarn.lock
+
+package.json
+package-lock.json
