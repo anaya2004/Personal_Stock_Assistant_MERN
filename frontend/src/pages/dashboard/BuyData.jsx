@@ -11,15 +11,15 @@ function BuyData() {
     axios.get('http://localhost:5000/api/get-buy-sheet-data')
       .then(response => {
         console.log('Raw API Response:', response.data); // Debugging
-  
+
         // Filter out empty arrays
         let cleanedData = response.data.filter(row => row.length > 0);
-  
+
         // Remove the first row if it contains headers
         if (cleanedData.length > 0 && cleanedData[0][0] === "DATE") {
           cleanedData = cleanedData.slice(1);
         }
-  
+
         setData(cleanedData);
       })
       .catch(error => {
@@ -38,11 +38,13 @@ function BuyData() {
   return (
     <Box>
       {data.length > 0 ? (
-        <TableContainer component={Paper}>
+        <TableContainer component={Paper} sx={{ boxShadow: 3, borderRadius: 2 }}>
           <Table>
-            <TableHead sx={{
-              backgroundColor: theme.palette.mode === 'dark' ? '#0a2351' : 'green',
-            }}>
+            <TableHead
+              sx={{
+                backgroundColor: theme.palette.mode === 'dark' ? '#0a2351' : '#0a2351', // Dark = Navy Blue, Light = Green
+              }}
+            >
               <TableRow>
                 <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Date</TableCell>
                 <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>CMP</TableCell>
@@ -73,19 +75,19 @@ function BuyData() {
           </Table>
         </TableContainer>
       ) : (
-        <p>Loading...</p>
+        <p style={{ textAlign: 'center', fontSize: '18px', fontWeight: 'bold' }}>Loading...</p>
       )}
 
       {/* "More" and "Less" buttons */}
       <Box mt={2} display="flex" justifyContent="center">
         {rowsToShow < data.length && (
-          <Button variant="outlined" color="primary" onClick={handleMoreRows} sx={{ marginRight: 1 }}>
-            More
+          <Button variant="contained" color="primary" onClick={handleMoreRows} sx={{ marginRight: 1 }}>
+            Show More
           </Button>
         )}
         {rowsToShow > 5 && (
-          <Button variant="outlined" color="secondary" onClick={handleLessRows}>
-            Less
+          <Button variant="contained" color="secondary" onClick={handleLessRows}>
+            Show Less
           </Button>
         )}
       </Box>
