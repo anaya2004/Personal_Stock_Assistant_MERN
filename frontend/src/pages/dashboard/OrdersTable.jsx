@@ -99,13 +99,13 @@ export default function OrderTable() {
     <Box 
     sx={{
       flex: 1,
-      
       height: '350px',
       overflowY: 'auto',
-      borderRadius: '10px' }}>
+      borderRadius: '5px' }}>
       <TableContainer>
         <Table>
           <TableHead sx={{
+            height: '72px',
             backgroundColor: theme.palette.mode === 'dark' ? '#0a2351' : '#0a2351', // Dark background in dark mode
             color: theme.palette.mode === 'dark' ? '#fff' : '#fff'  // White text in both modes
           }}>
@@ -123,6 +123,7 @@ export default function OrderTable() {
               <TableRow
                 key={index}
                 sx={{
+                  height: '72px',
                   backgroundColor: theme.palette.mode === 'dark' ? '#424242' : '#fff', // Different background for each row
                   '&:hover': {
                     backgroundColor: theme.palette.mode === 'dark' ? '#616161' : '#f5f5f5', // Hover effect with different colors

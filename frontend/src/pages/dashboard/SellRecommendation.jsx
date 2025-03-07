@@ -51,10 +51,9 @@ export default function SellRecommendation() {
   return (
     <Box   sx={{
       flex: 1,
-     
       height: '350px',
       overflowY: 'auto',
-      borderRadius: '10px' }}>
+      borderRadius: '5px' }}>
       <TableContainer>
         <Table>
           <TableHead sx={{
