@@ -9,7 +9,7 @@ import Box from '@mui/material/Box';
 
 // project import
 import MainCard from 'components/MainCard';
-import IncomeAreaChart from './IncomeAreaChart';
+import BseNseChart from './BseNseChart'; // ✅ Import BseNseChart instead of IncomeAreaChart
 
 // ==============================|| DEFAULT - UNIQUE VISITOR ||============================== //
 
@@ -20,7 +20,7 @@ export default function UniqueVisitorCard() {
     <>
       <Grid container alignItems="center" justifyContent="space-between">
         <Grid item>
-          <Typography variant="h5">Unique Visitor</Typography>
+          <Typography variant="h5">BSE vs NSE Sensex</Typography> {/* ✅ Updated title */}
         </Grid>
         <Grid item>
           <Stack direction="row" alignItems="center" spacing={0}>
@@ -43,9 +43,10 @@ export default function UniqueVisitorCard() {
           </Stack>
         </Grid>
       </Grid>
+
       <MainCard content={false} sx={{ mt: 1.5 }}>
         <Box sx={{ pt: 1, pr: 2 }}>
-          <IncomeAreaChart slot={slot} />
+          <BseNseChart timeFrame={slot} /> {/* ✅ Using BseNseChart instead of IncomeAreaChart */}
         </Box>
       </MainCard>
     </>
