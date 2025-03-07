@@ -96,7 +96,13 @@ export default function OrderTable() {
   if (error) return <Typography>Error fetching data</Typography>;
 
   return (
-    <Box>
+    <Box 
+    sx={{
+      flex: 1,
+      
+      height: '350px',
+      overflowY: 'auto',
+      borderRadius: '10px' }}>
       <TableContainer>
         <Table>
           <TableHead sx={{
