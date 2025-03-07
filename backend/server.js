@@ -18,7 +18,7 @@ const RANGE = 'buy!A6:F';// Range to append data
 
 // Google API OAuth setup
 const auth = new google.auth.GoogleAuth({
-  keyFile: 'service.json', // Path to your service account key JSON
+  keyFile: 'PSA.json', // Path to your service account key JSON
   scopes: [
     'https://www.googleapis.com/auth/spreadsheets',
     'https://www.googleapis.com/auth/drive',
