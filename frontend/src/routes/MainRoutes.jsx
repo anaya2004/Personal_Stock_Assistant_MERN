@@ -8,6 +8,8 @@ const Color = Loadable(lazy(() => import('pages/component-overview/color')));
 const Typography = Loadable(lazy(() => import('pages/component-overview/typography')));
 const Shadow = Loadable(lazy(() => import('pages/component-overview/shadows')));
 const DashboardDefault = Loadable(lazy(() => import('pages/dashboard/index')));
+const BuyData = Loadable(lazy(() => import('pages/dashboard/BuyData')));
+const SellData = Loadable(lazy(() => import('pages/dashboard/SellData')));
 
 // render - sample page
 const SamplePage = Loadable(lazy(() => import('pages/extra-pages/TotalInvestment')));
@@ -46,6 +48,16 @@ const MainRoutes = {
     {
       path: 'typography',
       element: <Typography />
+    },
+    // ✅ Add Buy Data Route
+    {
+      path: 'buy-data',
+      element: <BuyData />
+    },
+    // ✅ Add Sell Data Route
+    {
+      path: 'sell-data',
+      element: <SellData />
     }
   ]
 };
