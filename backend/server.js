@@ -5,37 +5,66 @@ const dotenv = require('dotenv');
 const cors = require('cors');
 const { google } = require('googleapis');
 const bodyParser = require('body-parser');
+const googleRoutes = require('./googleRoutes');
 dotenv.config();
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(bodyParser.json()); // Parse JSON request bodies
-     
 
-const SHEET_ID2 = '1S0gvUBlUNKkt-ho_IOXFOQaLev1x3JpWH5Toqj5-tgw'; // Google Sheet ID
-const RANGE = 'buy!A6:F';// Range to append data
-
-// Google API OAuth setup
+// ---------------- Existing Service Account Setup (KEEP THIS) ------------------------
 const auth = new google.auth.GoogleAuth({
   keyFile: 'PSA.json', // Path to your service account key JSON
   scopes: [
     'https://www.googleapis.com/auth/spreadsheets',
     'https://www.googleapis.com/auth/drive',
+    'https://www.googleapis.com/auth/drive.file',
   ],
 });
 
 const sheets = google.sheets({ version: 'v4', auth });
 const drive = google.drive({ version: 'v3', auth });
 
-// Constants for Google Sheets API
+// ------------------ Constants for Google Sheets API (KEEP THIS) ---------------------
 const SHEET_ID = process.env.SHEET_ID;
 const API_KEY = process.env.API_KEY;
 const STRATEGY_RANGE = process.env.STRATEGY_RANGE || 'Equity ETF Shop!G3:I13';
 const CMP_RANGE = process.env.CMP_RANGE || 'Equity ETF Shop!C3:C68';
 const STOCK_CODE_RANGE = process.env.STOCK_CODE_RANGE || 'Equity ETF Shop!A3:A68';
 
-// Function to copy the sheet to the user's account
+const SHEET_ID2 = '1S0gvUBlUNKkt-ho_IOXFOQaLev1x3JpWH5Toqj5-tgw'; // Google Sheet ID
+const RANGE = 'buy!A6:F'; // Range to append data
+
+// -------------------- USER-SPECIFIC SHEET COPY ROUTE (NEW PART) ---------------------
+// Copy sheet to user's Google Drive using their OAuth token
+app.post('/api/copy-google-sheet', async (req, res) => {
+  const { token } = req.body; // User's access token
+
+  try {
+    const oAuth2Client = new google.auth.OAuth2();
+    oAuth2Client.setCredentials({ access_token: token });
+
+    const drive = google.drive({ version: 'v3', auth: oAuth2Client });
+
+    const response = await drive.files.copy({
+      fileId: '1gVCCyB7roBtikDDAOx8adbiEjcpu-fk1syyaq9hnrxA', // The sheet you want to copy
+      requestBody: {
+        name: 'Personal Stock Assistant - Copy', // New name in user's drive
+      },
+      fields: 'id, name, webViewLink',
+    });
+
+    console.log('Sheet copied:', response.data);
+    res.json(response.data);
+  } catch (error) {
+    console.error('Error copying Google Sheet:', error);
+    res.status(500).json({ error: 'Failed to copy sheet.' });
+  }
+});
+
+
+// ----------------------- KEEP YOUR EXISTING SERVICE ACCOUNT BASED COPY FUNCTION ---------------
 const copySheetToUserAccount = async () => {
   try {
     const fileMetadata = {
@@ -54,8 +83,7 @@ const copySheetToUserAccount = async () => {
   }
 };
 
-
-
+app.use('/api', googleRoutes);
 
 
 // API to fetch strategy data and copy the sheet
