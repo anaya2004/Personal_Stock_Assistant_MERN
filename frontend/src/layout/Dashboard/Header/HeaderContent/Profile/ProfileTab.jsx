@@ -23,11 +23,11 @@ export default function ProfileTab() {
     setSelectedIndex(index);
   };
 
-    const handleLogout = () => {
-    dispatch({ type: LOGOUT });
-    localStorage.removeItem('user'); // Clear stored user data
-    navigate('/login'); // Redirect to login page
+  const handleLogout = () => {
+    localStorage.removeItem('user'); // Clear user data
+    window.location.href = '/free/login'; // Redirect to login page
   };
+  
 
   return (
     <List component="nav" sx={{ p: 0, '& .MuiListItemIcon-root': { minWidth: 32 } }}>

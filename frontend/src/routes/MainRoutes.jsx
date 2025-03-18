@@ -8,6 +8,9 @@ const Color = Loadable(lazy(() => import('pages/component-overview/color')));
 const Typography = Loadable(lazy(() => import('pages/component-overview/typography')));
 const Shadow = Loadable(lazy(() => import('pages/component-overview/shadows')));
 const DashboardDefault = Loadable(lazy(() => import('pages/dashboard/index')));
+const BuyData = Loadable(lazy(() => import('pages/dashboard/BuyData')));
+const SellData = Loadable(lazy(() => import('pages/dashboard/SellData')));
+import ProtectedRoute from "../ProtectedRoute";
 
 // render - sample page
 const SamplePage = Loadable(lazy(() => import('pages/extra-pages/TotalInvestment')));
@@ -15,11 +18,11 @@ const SamplePage = Loadable(lazy(() => import('pages/extra-pages/TotalInvestment
 // ==============================|| MAIN ROUTING ||============================== //
 
 const MainRoutes = {
-  path: '/',
-  element: <Dashboard />,
+  path: "/",
+  element: <ProtectedRoute element={<Dashboard />} />, // Protect Dashboard
   children: [
     {
-      path: '/',
+      path: "/",
       element: <DashboardDefault />
     },
     {
@@ -46,6 +49,16 @@ const MainRoutes = {
     {
       path: 'typography',
       element: <Typography />
+    },
+    // ✅ Add Buy Data Route
+    {
+      path: 'buy-data',
+      element: <BuyData />
+    },
+    // ✅ Add Sell Data Route
+    {
+      path: 'sell-data',
+      element: <SellData />
     }
   ]
 };

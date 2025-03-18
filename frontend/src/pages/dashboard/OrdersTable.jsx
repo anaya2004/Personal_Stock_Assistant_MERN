@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import {
   Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
-  Typography, Box, Modal
+  Typography, Box, Modal, useTheme
 } from '@mui/material';
 import { NumericFormat } from 'react-number-format';
 
@@ -18,6 +18,9 @@ export default function OrderTable() {
   const [totalInvestment, setTotalInvestment] = useState(
     localStorage.getItem('totalInvestment') || 100000
   );
+  const [rowsToShow, setRowsToShow] = useState(4);  // Track number of rows to show
+
+  const theme = useTheme();  // Access the current theme (light/dark mode)
 
   useEffect(() => {
     const fetchStrategyData = async () => {
@@ -81,15 +84,32 @@ export default function OrderTable() {
     }
   };
 
+  const handleMoreRows = () => {
+    setRowsToShow(rows.length); // Show all rows
+  };
+
+  const handleLessRows = () => {
+    setRowsToShow(4); // Reset to show only 4 rows
+  };
+
   if (loading) return <Typography>Loading...</Typography>;
   if (error) return <Typography>Error fetching data</Typography>;
 
   return (
-    <Box>
+    <Box 
+    sx={{
+      flex: 1,
+      height: '350px',
+      overflowY: 'auto',
+      borderRadius: '5px' }}>
       <TableContainer>
         <Table>
-          <TableHead>
-            <TableRow sx={{ backgroundColor: 'green', color: 'white' }}>
+          <TableHead sx={{
+            height: '72px',
+            backgroundColor: theme.palette.mode === 'dark' ? '#0a2351' : '#0a2351', // Dark background in dark mode
+            color: theme.palette.mode === 'dark' ? '#fff' : '#fff'  // White text in both modes
+          }}>
+            <TableRow>
               <TableCell sx={{ color: 'white' }}>Rank</TableCell>
               <TableCell sx={{ color: 'white' }}>% from 52 Week Low</TableCell>
               <TableCell sx={{ color: 'white' }}>ETF Code</TableCell>
@@ -99,8 +119,17 @@ export default function OrderTable() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row, index) => (
-              <TableRow key={index}>
+            {rows.slice(0, rowsToShow).map((row, index) => (
+              <TableRow
+                key={index}
+                sx={{
+                  height: '72px',
+                  backgroundColor: theme.palette.mode === 'dark' ? '#424242' : '#fff', // Different background for each row
+                  '&:hover': {
+                    backgroundColor: theme.palette.mode === 'dark' ? '#616161' : '#f5f5f5', // Hover effect with different colors
+                  },
+                }}
+              >
                 <TableCell>{row[0]}</TableCell> {/* Rank */}
                 <TableCell>{row[1]}</TableCell> {/* % from 52 Week Low */}
                 <TableCell>{row[2]}</TableCell> {/* ETF Code */}
@@ -109,13 +138,40 @@ export default function OrderTable() {
                 </TableCell> {/* CMP */}
                 <TableCell>{Math.floor((totalInvestment / 40) / cmpData[index])}</TableCell> {/* Shares */}
                 <TableCell>
-                  <Button variant="contained" color="success" size="small" onClick={() => handleBuy(index)}>Buy</Button>
+                  <Button
+                    variant="contained"
+                    color="success"
+                    size="small"
+                    onClick={() => handleBuy(index)}
+                    sx={{
+                      backgroundColor: theme.palette.mode === 'dark' ? '#64b5f6' : '#1976d2', // Button color change based on theme
+                      '&:hover': {
+                        backgroundColor: theme.palette.mode === 'dark' ? '#42a5f5' : '#1565c0', // Hover effect on button
+                      }
+                    }}
+                  >
+                    Buy
+                  </Button>
                 </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </TableContainer>
+
+      {/* Show the "More" and "Less" buttons based on the rows shown */}
+      <Box mt={2} display="flex" justifyContent="center">
+        {rowsToShow < rows.length && (
+          <Button variant="outlined" color="primary" onClick={handleMoreRows} sx={{ marginRight: 1 }}>
+            More
+          </Button>
+        )}
+        {rowsToShow > 4 && (
+          <Button variant="outlined" color="secondary" onClick={handleLessRows}>
+            Less
+          </Button>
+        )}
+      </Box>
 
       {/* Modal for Buy Summary */}
       <Modal open={open} onClose={() => setOpen(false)}>
@@ -125,7 +181,7 @@ export default function OrderTable() {
           left: '50%',
           transform: 'translate(-50%, -50%)',
           width: 400,
-          bgcolor: 'background.paper',
+          bgcolor: theme.palette.mode === 'dark' ? '#303030' : 'background.paper', // Modal background color based on theme
           boxShadow: 24,
           p: 4,
           borderRadius: 2
